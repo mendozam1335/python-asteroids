@@ -5,7 +5,10 @@ from logger import log_state, log_event
 from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
+from powerup_field import PowerUp_Field
 from shot import Shot
+from machinegun import Machinegun
+
 def main():
     # Initialize Pygame
     pygame.init()
@@ -15,14 +18,18 @@ def main():
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
     shots = pygame.sprite.Group()
+    powerups = pygame.sprite.Group()
 
+    PowerUp_Field.containers = (updatable)
     Asteroid.containers = (updatable, drawable, asteroids)
     Player.containers = (updatable, drawable)
     AsteroidField.containers = (updatable)
     Shot.containers = (shots, drawable, updatable)
+    Machinegun.containers = (drawable, powerups)
 
     asteroid_field = AsteroidField()
     ship = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    powerup_field = PowerUp_Field()
 
     time = pygame.time.Clock()
     dt = 0
@@ -34,6 +41,7 @@ def main():
         log_state()
         screen.fill("black")
         updatable.update(dt)
+
         for asteroid in asteroids:
             if ship.collides_with(asteroid):
                 log_event("player_hit")
