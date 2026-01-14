@@ -109,7 +109,8 @@ powerUps = [Machinegun, Speedup]
 
 ### Contributions
 
-boot.dev
+boot.dev project guidance using pseudocode. PowerUps, scoreboard, icons were original
+
 icons provide by
 
 ```html
