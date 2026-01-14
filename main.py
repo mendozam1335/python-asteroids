@@ -25,11 +25,11 @@ def main():
     Player.containers = (updatable, drawable)
     AsteroidField.containers = (updatable)
     Shot.containers = (shots, drawable, updatable)
-    Machinegun.containers = (drawable, powerups)
+    Machinegun.containers = (drawable, powerups, updatable)
 
     asteroid_field = AsteroidField()
     ship = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-    powerup_field = PowerUp_Field()
+    powerup_field = PowerUp_Field(ship)
 
     time = pygame.time.Clock()
     dt = 0
@@ -53,6 +53,13 @@ def main():
                     log_event("asteroid_shot")
                     asteroid.split()
                     shot.kill()
+
+        for powerup in powerups:
+            if not powerup.should_collide():
+                continue
+            if ship.collides_with(powerup):
+                log_event("powerup_collected")
+                powerup.on_pickup()
 
         for group in drawable:
             group.draw(screen)
