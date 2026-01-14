@@ -1,10 +1,12 @@
 import pygame
 import random
 from machinegun import Machinegun
+from speedup import Speedup
 from constants import *
-
+from logger import log_event
 class PowerUp_Field(pygame.sprite.Sprite):
-    powerUps = [Machinegun]
+    powerUps = [Machinegun, Speedup]
+
     def __init__(self, player=None):
       pygame.sprite.Sprite.__init__(self, self.containers)
       self.spawn_chance = POWERUP_CHANCE
@@ -13,16 +15,16 @@ class PowerUp_Field(pygame.sprite.Sprite):
       self.player = player
 
     def spawn(self, pu):
-          # x = random.randint(0, SCREEN_WIDTH)
-          # y = random.randint(0, SCREEN_HEIGHT)
-          powerup = pu(SCREEN_WIDTH /2, SCREEN_HEIGHT /2, self.player)
-          print("Spawned machinegun power-up")
+          x = random.randint(10, SCREEN_WIDTH - 10)
+          y = random.randint(10, SCREEN_HEIGHT - 10)
+          powerup = pu(x, y, self.player)
+          print(f"Spawning powerup: {pu.__name__} at {x, y}" )
 
     def update(self, dt):
       self.spawn_timer += dt
 
       if self.spawn_timer >= POWERUP_SPAWN_INTERVAL and self.powerup_count < MAX_POWERUPS:
-          print("Checking to spawn power-up...")
+          
           self.spawn_timer = 0.0
           if random.random() < self.spawn_chance:
               pu = random.choice(self.powerUps)
